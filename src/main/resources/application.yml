@@ -1,0 +1,95 @@
+spring.output.ansi.enabled: always
+
+server:
+  port: 8888
+  servlet:
+    context-path: /
+
+# 실행시  root level을 INFO이상으로 올리지 않으면 해당 오류나온다. javax.management.InstanceNotFoundException
+logging:
+  level:
+    root: debug
+
+# resilience4j
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      failureRateThreshold: 50
+      slowCallRateThreshold: 80
+      slowCallDurationThreshold: 1000
+      permittedNumberOfCallsInHalfOpenState: 5
+      maxWaitDurationInHalfOpenState: 5000
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 10
+      waitDurationInOpenState: 5000
+      registerHealthIndicator: true
+  instances:
+    redisCircuitBreaker:
+      baseConfig: default
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+spring:
+  graphql:
+    graphiql:
+      # graphiql 사용 여부
+      enabled: true
+      # graphiql 경로 (default)
+      # path: /graphiql
+    cors:
+      # cors setting
+      allowed-origins: \*
+    schema:
+      printer:
+        # schema 보기 여부 ( url + /graphql/schma)
+        enabled: true
+
+  redis:
+    cluster:
+      timeout: 3
+      nodes:
+        127.0.0.1:6379,
+        127.0.0.1:6380,
+        127.0.0.1:6381
+      max-redirects: 1
+    password:
+
+  # 스웨거 설정때문에 없으면 안됨
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # h2 콘솔
+  h2.console.enabled: true
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:./data/testdb
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    # osiv(open session in view) 설정  false 일경우 service - repository까지만 커넥션 리소스 사용
+    open-in-view: false
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

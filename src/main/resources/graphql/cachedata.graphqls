@@ -1,0 +1,6 @@
+type CacheData {
+    seq: Int
+    date: String
+    key: String
+    value: String
+}
