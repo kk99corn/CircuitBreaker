@@ -1,7 +1,5 @@
 package com.example.toygraphqls.controller;
 
-import com.example.toygraphqls.model.Member;
-import com.example.toygraphqls.repository.redis.MemberRepository;
 import com.example.toygraphqls.service.CacheDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -18,29 +15,10 @@ import java.util.Optional;
 @RequestMapping("/rest")
 public class restController {
 
-    private final MemberRepository memberRepository;
     private final CacheDataService cacheDataService;
 
-    public restController(MemberRepository memberRepository, CacheDataService cacheDataService) {
-        this.memberRepository = memberRepository;
+    public restController(CacheDataService cacheDataService) {
         this.cacheDataService = cacheDataService;
-    }
-
-    @GetMapping(value = "/redisInit")
-    public void redisInit() {
-        for (int i = 1; i <= 10; i++) {
-            Member member = new Member(i, "test" + i, i * 10);
-            memberRepository.save(member);
-        }
-    }
-
-    @GetMapping(value = "/redis")
-    public Map<Integer, Optional<Member>> redis() {
-        Map<Integer, Optional<Member>> map = new HashMap<>();
-        for (int i = 1; i <= 10; i++) {
-            map.put(i, memberRepository.findById(i));
-        }
-        return map;
     }
 
     @ApiOperation(

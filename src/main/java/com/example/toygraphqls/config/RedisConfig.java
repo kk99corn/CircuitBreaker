@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -38,7 +40,12 @@ public class RedisConfig {
         redisClusterConfiguration.setPassword(password);
         redisClusterConfiguration.setMaxRedirects(maxRedirects);
 
-        return new LettuceConnectionFactory(redisClusterConfiguration);
+        // redisCommandTimeout 설정
+        LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
+                .commandTimeout(Duration.ofMillis(200))
+                .build();
+
+        return new LettuceConnectionFactory(redisClusterConfiguration, lettuceClientConfiguration);
     }
 
     // 문자열특화 템플릿  (repository 이용할경우 필요X)
