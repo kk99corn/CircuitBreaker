@@ -15,6 +15,21 @@ class CacheDataServiceTest {
 	CacheDataService cacheDataService;
 
 	@Test
+	void setCacheDataTest() {
+		String key = "test1";
+		String value = "test data 1";
+
+		CacheDataDto cacheDataDto = CacheDataDto.builder()
+				.key(key)
+				.value(value)
+				.build();
+		cacheDataService.setCacheData(cacheDataDto);
+
+		CacheDataDto cacheData = cacheDataService.getCacheData(key);
+		assertThat(cacheData.getValue()).isEqualTo(value);
+	}
+
+	@Test
 	void getCacheDataTest() {
 		String key = "test";
 		CacheDataDto cacheData = cacheDataService.getCacheData(key);
