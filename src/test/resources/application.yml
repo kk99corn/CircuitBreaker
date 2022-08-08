@@ -42,7 +42,7 @@ management:
 
 spring:
   config:
-    activate.on-profile: default
+    activate.on-profile: test
   graphql:
     graphiql:
       # graphiql 사용 여부
@@ -56,14 +56,13 @@ spring:
       printer:
         # schema 보기 여부 ( url + /graphql/schma)
         enabled: true
-
   redis:
     cluster:
       timeout: 3
       nodes:
-        127.0.0.1:6379,
-        127.0.0.1:6380,
-        127.0.0.1:6381
+        127.0.0.1:7379,
+        127.0.0.1:7380,
+        127.0.0.1:7381
       max-redirects: 1
     password:
 
@@ -77,12 +76,13 @@ spring:
 
   datasource:
     hikari:
-      jdbc-url: jdbc:h2:./data/testdb
+      jdbc-url: jdbc:h2:mem/testdb
       username: sa
       password:
       driver-class-name: org.h2.Driver
 
   jpa:
+    defer-datasource-initialization: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
