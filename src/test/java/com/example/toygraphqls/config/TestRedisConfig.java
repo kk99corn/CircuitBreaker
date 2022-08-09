@@ -19,10 +19,9 @@ import java.util.List;
  * Template : Redis에 직접 Key, Value값을 설정하여 CRUD를 합니다.
  * RedisManager :  메서드나 타입에 캐싱처리를 합니다.
  */
-
-@Profile("default")
+@Profile("test")
 @Configuration
-public class RedisConfig {
+public class TestRedisConfig {
 
     // redis node
     @Value("${spring.redis.cluster.nodes}")
@@ -44,9 +43,8 @@ public class RedisConfig {
 
         // redisCommandTimeout 설정
         LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
-                .commandTimeout(Duration.ofMillis(200))
+                .commandTimeout(Duration.ofSeconds(60))
                 .build();
-
         return new LettuceConnectionFactory(redisClusterConfiguration, lettuceClientConfiguration);
     }
 

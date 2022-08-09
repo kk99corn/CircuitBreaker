@@ -58,7 +58,6 @@ spring:
         enabled: true
   redis:
     cluster:
-      timeout: 3
       nodes:
         127.0.0.1:7379,
         127.0.0.1:7380,

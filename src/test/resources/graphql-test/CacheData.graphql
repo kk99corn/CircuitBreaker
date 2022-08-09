@@ -1,0 +1,6 @@
+query{
+    findCacheData(key: $key) {
+        key
+        value
+    }
+}

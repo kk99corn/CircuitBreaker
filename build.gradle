@@ -10,6 +10,7 @@ sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -48,7 +49,8 @@ dependencies {
     testImplementation 'org.springframework.graphql:spring-graphql-test'
 
     // test redis
-    testImplementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
+    // implementation ('it.ozimov:embedded-redis:0.7.3') { exclude group: "org.slf4j", module: "slf4j-simple" }
+    implementation 'com.github.tarossi:embedded-redis:1.5.2'
 }
 
 tasks.named('test') {
