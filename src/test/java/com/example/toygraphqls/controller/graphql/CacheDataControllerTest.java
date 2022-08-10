@@ -2,27 +2,39 @@ package com.example.toygraphqls.controller.graphql;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
-import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@Profile("test")
+import java.util.HashMap;
+import java.util.Map;
+
 @SpringBootTest
-@AutoConfigureGraphQlTester
+@ActiveProfiles("test")
+@AutoConfigureMockMvc
 class CacheDataControllerTest {
 
 	@Autowired
-	private GraphQlTester graphQlTester;
+	MockMvc mockMvc;
 
 	@Test
-	void findCacheDataTest() {
+	void findCacheDataTest() throws Exception {
 		// given
 		// when
-		GraphQlTester.Response execute = this.graphQlTester.documentName("CacheData")
-				.variable("key", "FILE_CACHE_1")
-				.execute();
-		System.out.println(execute.toString());
 		// then
+
+		Map<String, String> params = new HashMap<>();
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/graphql")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"query\":\"query{\\n test:findCacheData(key: \\\"test\\\") {\\n    key,\\n    value\\n  }\\n}\"}")
+		)
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 }

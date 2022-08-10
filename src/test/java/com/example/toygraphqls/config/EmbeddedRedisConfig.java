@@ -18,17 +18,17 @@ public class EmbeddedRedisConfig {
 
 	@PostConstruct
 	public void redisCluster() {
-		redisCluster = new RedisCluster.Builder()
-				.serverPorts(Arrays.asList(7379, 7380, 7381))
-				.numOfReplicates(1)
-				.numOfRetries(1)
-				.build();
-		try {
-			redisCluster.start();
-		} catch (Exception e) {
-			// redis 중복실행 방지용 임시처리
-			System.out.println("redisCluster = " + redisCluster);
-		}
+//		redisCluster = new RedisCluster.Builder()
+//				.serverPorts(Arrays.asList(7379, 7380, 7381))
+//				.numOfReplicates(1)
+//				.numOfRetries(1)
+//				.build();
+//		try {
+//			redisCluster.start();
+//		} catch (Exception e) {
+//			// redis 중복실행 방지용 임시처리
+//			System.out.println("redisCluster = " + redisCluster);
+//		}
 	}
 
 	@PreDestroy
