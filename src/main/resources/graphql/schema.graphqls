@@ -1,7 +1,7 @@
 type Query {
-    findCacheData(key: String!): CacheData
+    CacheData(key: String!): CacheData
 }
 
 type Mutation {
-    saveCacheData(key: String!, value: String!): CacheData
+    CacheData(key: String!, value: String!): CacheData
 }

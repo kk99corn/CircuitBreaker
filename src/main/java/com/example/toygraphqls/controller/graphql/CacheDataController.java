@@ -18,7 +18,7 @@ public class CacheDataController {
         this.cacheDataService = cacheDataService;
     }
 
-    @MutationMapping
+    @MutationMapping(value = "CacheData")
     public CacheDataDto saveCacheData(@Argument String key, @Argument String value) {
         CacheDataDto cacheDataDto = CacheDataDto.builder()
                 .key(key)
@@ -29,7 +29,7 @@ public class CacheDataController {
         return cacheDataDto;
     }
 
-    @QueryMapping
+    @QueryMapping(value = "CacheData")
     public CacheDataDto findCacheData(@Argument String key) {
         return cacheDataService.getCacheData(key);
     }
