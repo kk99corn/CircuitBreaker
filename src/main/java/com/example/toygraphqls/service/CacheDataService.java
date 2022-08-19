@@ -1,5 +1,6 @@
 package com.example.toygraphqls.service;
 
+import com.example.toygraphqls.exception.GQLInvalidParameterException;
 import com.example.toygraphqls.model.dto.CacheDataDto;
 import com.example.toygraphqls.model.entity.CacheData;
 import com.example.toygraphqls.repository.jpa.CacheDataJpaRepository;
