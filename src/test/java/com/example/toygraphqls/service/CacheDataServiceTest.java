@@ -3,6 +3,7 @@ package com.example.toygraphqls.service;
 import com.example.toygraphqls.model.dto.CacheDataDto;
 import com.example.toygraphqls.model.entity.CacheData;
 import com.example.toygraphqls.repository.jpa.CacheDataJpaRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class CacheDataServiceTest {
 	StringRedisTemplate stringRedisTemplate;
 
 	@Test
-	@Order(1)
+	@BeforeEach
 	void testDataInit() {
 		// 테스트용 데이터 세팅
 		for (int i = 1; i <= 10; i++) {
@@ -91,6 +92,19 @@ class CacheDataServiceTest {
 		// then
 		assertThat(cacheDataDto.getKey()).isEqualTo(key);
 		assertThat(cacheDataDto.getValue()).isNull();
+	}
+
+	@Test
+	void getCacheDataFallbackTest() throws Throwable {
+		// given
+		String key = "TEST_1";
+
+		// when
+		CacheDataDto cacheDataDto = cacheDataService.getCacheDataFallback(key, new Exception("test exception"));
+
+		// then
+		assertThat(cacheDataDto.getKey()).isEqualTo(key);
+		assertThat(cacheDataDto.getValue()).isEqualTo("[CB test]: TEST_VALUE_1");
 	}
 
 }
