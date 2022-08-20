@@ -69,10 +69,12 @@ public class CacheDataService {
 				.build();
 	}
 
-	public CacheDataDto getCacheDataFallback(String key, Throwable throwable) throws Throwable {
-		if (throwable instanceof GQLBadRequestException
-				|| throwable instanceof GQLNotFoundException) {
-			throw throwable;
+	public CacheDataDto getCacheDataFallback(String key, Throwable throwable) {
+		if (throwable instanceof GQLBadRequestException) {
+			throw (GQLBadRequestException) throwable;
+		}
+		if (throwable instanceof GQLNotFoundException) {
+			throw (GQLNotFoundException) throwable;
 		}
 
 		CacheData cacheData;

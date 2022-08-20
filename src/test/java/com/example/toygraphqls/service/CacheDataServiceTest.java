@@ -4,7 +4,6 @@ import com.example.toygraphqls.model.dto.CacheDataDto;
 import com.example.toygraphqls.model.entity.CacheData;
 import com.example.toygraphqls.repository.jpa.CacheDataJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -95,7 +94,7 @@ class CacheDataServiceTest {
 	}
 
 	@Test
-	void getCacheDataFallbackTest() throws Throwable {
+	void getCacheDataFallbackTest() {
 		// given
 		String key = "TEST_1";
 
