@@ -1,9 +1,11 @@
 package com.example.toygraphqls.service;
 
-import com.example.toygraphqls.exception.GQLInvalidParameterException;
+import com.example.toygraphqls.exception.GQLBadRequestException;
+import com.example.toygraphqls.exception.GQLNotFoundException;
 import com.example.toygraphqls.model.dto.CacheDataDto;
 import com.example.toygraphqls.model.entity.CacheData;
 import com.example.toygraphqls.repository.jpa.CacheDataJpaRepository;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,8 @@ public class CacheDataService {
 
                 // db에만 있고 redis에 없는 캐시 -> redis 저장
                 stringRedisTemplate.opsForValue().set(cacheData.getKey(), cacheData.getValue());
+            } else {
+                throw new GQLNotFoundException("data not found: key=" + key);
             }
         }
 
@@ -72,6 +76,8 @@ public class CacheDataService {
         Optional<CacheData> cacheDataByKey = cacheDataJpaRepository.findByKey(key);
         if (cacheDataByKey.isPresent()) {
             cacheData = cacheDataByKey.get();
+        } else {
+            throw new GQLNotFoundException("data not found: key=" + key);
         }
 
         return CacheDataDto.builder()

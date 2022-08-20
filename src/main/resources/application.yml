@@ -24,6 +24,9 @@ resilience4j.circuitbreaker:
       minimumNumberOfCalls: 10
       waitDurationInOpenState: 5000
       registerHealthIndicator: true
+      ignoreExceptions:
+        - com.example.toygraphqls.exception.GQLBadRequestException
+        - com.example.toygraphqls.exception.GQLNotFoundException
   instances:
     redisCircuitBreaker:
       baseConfig: default
