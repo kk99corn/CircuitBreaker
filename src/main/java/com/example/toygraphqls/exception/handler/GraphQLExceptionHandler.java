@@ -1,8 +1,8 @@
 package com.example.toygraphqls.exception.handler;
 
-import com.example.toygraphqls.exception.GQLInvalidParameterException;
+import com.example.toygraphqls.exception.GQLBadRequestException;
+import com.example.toygraphqls.exception.GQLNotFoundException;
 import graphql.GraphQLError;
-import graphql.GraphqlErrorBuilder;
 import graphql.language.SourceLocation;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +19,17 @@ public class GraphQLExceptionHandler implements DataFetcherExceptionResolver {
 
 	@Override
 	public Mono<List<GraphQLError>> resolveException(Throwable exception, DataFetchingEnvironment environment) {
-
-		log.info("[GraphQLExceptionHandler] NotFoundException type {}", exception);
 		List<SourceLocation> sourceLocation = List.of(environment.getField().getSourceLocation());
 
-		if (exception instanceof GQLInvalidParameterException) {
-			GQLInvalidParameterException invalidParameterException = (GQLInvalidParameterException) exception;
-			return Mono.just(Collections.singletonList(invalidParameterException));
+		if (exception instanceof GQLBadRequestException) {
+			GQLBadRequestException badRequestException = (GQLBadRequestException) exception;
+			return Mono.just(Collections.singletonList(badRequestException));
 		}
 
+		if (exception instanceof GQLNotFoundException) {
+			GQLNotFoundException notFoundException = (GQLNotFoundException) exception;
+			return Mono.just(Collections.singletonList(notFoundException));
+		}
 
 		return Mono.empty();
 	}
