@@ -13,16 +13,16 @@ import java.util.Map;
 @Getter
 public class GraphQLCustomException extends RuntimeException implements GraphQLError {
 	private HttpStatus status;
-	private String message;
+	private String exceptionMessage;
 
-	public GraphQLCustomException(String exceptionMessage) {
-		super(exceptionMessage);
+	public GraphQLCustomException(String message) {
+		super(message);
 	}
 
-	public GraphQLCustomException(String exceptionMessage, HttpStatus status, String message) {
-		this(exceptionMessage);
+	public GraphQLCustomException(String message, HttpStatus status, String exceptionMessage) {
+		this(message);
 		this.status = status;
-		this.message = message;
+		this.exceptionMessage = exceptionMessage;
 	}
 
 	@Override
@@ -39,8 +39,7 @@ public class GraphQLCustomException extends RuntimeException implements GraphQLE
 	public Map<String, Object> getExtensions() {
 		Map<String, Object> customAttributes = new LinkedHashMap<>();
 		customAttributes.put("status", this.status.value());
-		customAttributes.put("message", this.message);
-		customAttributes.put("exceptionMessage", this.getMessage());
+		customAttributes.put("exceptionMessage", this.exceptionMessage);
 		return customAttributes;
 	}
 }
