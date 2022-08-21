@@ -1,5 +1,6 @@
 package com.example.toygraphqls.controller.graphql;
 
+import com.example.toygraphqls.exception.GQLBadRequestException;
 import com.example.toygraphqls.model.dto.CacheDataDto;
 import com.example.toygraphqls.service.CacheDataService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,25 +13,28 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class CacheDataController {
 
-    private final CacheDataService cacheDataService;
+	private final CacheDataService cacheDataService;
 
-    public CacheDataController(CacheDataService cacheDataService) {
-        this.cacheDataService = cacheDataService;
-    }
+	public CacheDataController(CacheDataService cacheDataService) {
+		this.cacheDataService = cacheDataService;
+	}
 
-    @MutationMapping(value = "CacheData")
-    public CacheDataDto saveCacheData(@Argument String key, @Argument String value) {
-        CacheDataDto cacheDataDto = CacheDataDto.builder()
-                .key(key)
-                .value(value)
-                .build();
+	@MutationMapping(value = "CacheData")
+	public CacheDataDto saveCacheData(@Argument String key, @Argument String value) {
+		CacheDataDto cacheDataDto = CacheDataDto.builder()
+				.key(key)
+				.value(value)
+				.build();
 
-        cacheDataService.setCacheData(cacheDataDto);
-        return cacheDataDto;
-    }
+		cacheDataService.setCacheData(cacheDataDto);
+		return cacheDataDto;
+	}
 
-    @QueryMapping(value = "CacheData")
-    public CacheDataDto findCacheData(@Argument String key) {
-        return cacheDataService.getCacheData(key);
-    }
+	@QueryMapping(value = "CacheData")
+	public CacheDataDto findCacheData(@Argument String key) {
+		if (key.isBlank()) {
+			throw new GQLBadRequestException("key is blank");
+		}
+		return cacheDataService.getCacheData(key);
+	}
 }
