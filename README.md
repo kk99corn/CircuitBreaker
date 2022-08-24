@@ -1,6 +1,6 @@
 # toy-graphqls
 
-토이프로젝트-graphql
+토이프로젝트-graphql, CircuitBreaker
 
 
 Springboot 2.7.0
